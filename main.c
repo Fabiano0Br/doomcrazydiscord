@@ -1,3 +1,4 @@
+ 
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -46,7 +47,7 @@ int main (int argc, char *argv[]) {
 	SDL_QueryTexture(img, NULL, NULL, &w, &h); // get the width and height of the texture
 	// put the location where we want the texture to be drawn into a rectangle
 	// I'm also scaling the texture 2x simply by setting the width and height
-	SDL_Rect texr; texr.x = WIDTH/50; texr.y = HEIGHT/50; texr.w = w*0.402; texr.h = h*0.4; 
+	SDL_Rect texr; texr.x = WIDTH/50; texr.y = HEIGHT/50; texr.w = w*0.802; texr.h = h*0.8; 
 	
 	// main loop
 	while (1) {
@@ -70,9 +71,6 @@ int main (int argc, char *argv[]) {
 		
 	}
 	 
-    SDL_Delay(3000);
-    // clean up
- 
     SDL_CloseAudioDevice(deviceId);
     SDL_FreeWAV(wavBuffer);
 	SDL_DestroyTexture(img);
