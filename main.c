@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
 #define WIDTH 800
 #define HEIGHT 540
@@ -17,7 +18,24 @@ int main (int argc, char *argv[]) {
 	// Initialize SDL.
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 			return 1;
-	
+	    SDL_Init(SDL_INIT_AUDIO);
+
+    // load WAV file
+ 
+    SDL_AudioSpec wavSpec;
+    Uint32 wavLength;
+    Uint8 *wavBuffer;
+ 
+    SDL_LoadWAV("doom.wav", &wavSpec, &wavBuffer, &wavLength);	
+
+    SDL_AudioDeviceID deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
+
+    // play audio
+ 
+    int success = SDL_QueueAudio(deviceId, wavBuffer, wavLength);
+    SDL_PauseAudioDevice(deviceId, 0);
+
+    // keep application running long enough to hear the sound
 	// create the window and renderer
 	// note that the renderer is accelerated
 	win = SDL_CreateWindow("DOOM", 100, 100, WIDTH, HEIGHT, 0);
@@ -51,10 +69,17 @@ int main (int argc, char *argv[]) {
 		SDL_RenderPresent(renderer);
 		
 	}
-	
+	 
+    SDL_Delay(3000);
+    // clean up
+ 
+    SDL_CloseAudioDevice(deviceId);
+    SDL_FreeWAV(wavBuffer);
 	SDL_DestroyTexture(img);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(win);
-	
+    SDL_Quit();
+
+
 	return 0;
 }
